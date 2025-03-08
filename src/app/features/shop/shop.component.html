@@ -1,0 +1,19 @@
+<!-- <p>shop works!</p>
+<h2>welcome from {{ title }}</h2>
+<ul>
+  @for(product of products ; track product.id){
+    <li>{{ product.name }}</li>
+   }
+</ul> -->
+<div class="grid grid-cols-4 gap-4">
+  @for(product of products ; track product.id){
+    <!-- <mat-card appearance="raised" >
+      <img src="{{ product.pictureUrl }}" alt="image of {{ product.name }} ">
+      <h3>{{ product.name }}</h3>
+    </mat-card>
+     -->
+    <app-product-item [product]="product"></app-product-item>
+    <!-- <li>{{ product.name }}</li> -->
+
+   }
+</div>
