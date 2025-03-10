@@ -5,15 +5,50 @@
     <li>{{ product.name }}</li>
    }
 </ul> -->
-<div class="grid grid-cols-4 gap-4">
-  @for(product of products ; track product.id){
+<div class="flex flex-col gap-3">
+  <div class="justify-between flex ">
+    <mat-paginator class="bg-white" (page)="handlePageEvent($event)" [length]="products?.count" [pageSize]="shopParams.pageSize" [showFirstLastButtons]="true" [pageSizeOptions]="pageSizeOptions" [pageIndex]="shopParams.pageNumber - 1" aria-label="Select page">
+
+    </mat-paginator>
+    <form #searchForm="ngForm" (ngSubmit)="onSearchChange()" class="relative flex item-center w-full max-w-md mx-4">
+
+<input type="search" placeholder="Search" name="searc" [(ngModel)]="shopParams.search" class="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-lg  ">
+<button mat-icon-button type="submit"
+ class="absolute right-8 inset-y-0 top-2 flex item-center pl-3">
+<mat-icon >search</mat-icon>
+</button>
+</form>
+    <div class="flex gap-3">
+
+      <button class="match-input-heigt" mat-stroked-button (click)="openFiltersDialog()">
+        <mat-icon>filter_list</mat-icon>
+        Filters
+      </button>
+      <button mat-stroked-button class="match-input-heigt" [mat-menu-trigger-for]="sortMenu">
+        <mat-icon>swap_vert</mat-icon>
+        Sort
+      </button>
+    </div>
+  </div>
+  <div class="grid grid-cols-4 gap-4">
+    @for(product of products?.data ; track product.id){
     <!-- <mat-card appearance="raised" >
-      <img src="{{ product.pictureUrl }}" alt="image of {{ product.name }} ">
-      <h3>{{ product.name }}</h3>
-    </mat-card>
-     -->
+        <img src="{{ product.pictureUrl }}" alt="image of {{ product.name }} ">
+        <h3>{{ product.name }}</h3>
+      </mat-card>
+       -->
     <app-product-item [product]="product"></app-product-item>
     <!-- <li>{{ product.name }}</li> -->
 
-   }
+    }
+  </div>
 </div>
+
+<mat-menu #sortMenu="matMenu">
+<mat-selection-list [multiple]="false" (selectionChange)="onSortChange($event)">
+@for(sort of sortOptions ; track $index ){
+<mat-list-option [value]="sort.value" [selected]="shopParams.sort === sort.value" >{{ sort.name }}</mat-list-option>
+}
+
+</mat-selection-list>
+</mat-menu>
